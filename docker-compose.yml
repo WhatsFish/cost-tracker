@@ -1,0 +1,19 @@
+services:
+  web:
+    build: ./web
+    image: cost-tracker-web
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      PG_HOST: db
+      PG_PORT: "5432"
+      PG_USER: cost_tracker
+      PG_DB: cost_tracker
+    ports:
+      - "127.0.0.1:3005:3000"
+
+# Reuse traffic-monitor's network so we can resolve the shared `db` container.
+networks:
+  default:
+    name: traffic-monitor_default
+    external: true
